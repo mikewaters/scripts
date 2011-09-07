@@ -1,0 +1,72 @@
+#!/bin/sh
+#--------------------------------------------------------------
+#This script uses the following programs to obtain information! 
+#"cat, echo, sed, uname, free, whoami, logname, uptime, and df"
+#--------------------------------------------------------------
+clear
+#---------------
+#Current Version
+#---------------
+aver=v1.03
+#---------------------------------------------------------------------------------
+#Delcare some variables, also checks for distribution version. (Slackware & Debian)
+#---------------------------------------------------------------------------------
+#{
+#if [ -e /etc/slackware-version ]
+#then
+#slackver=$(cat /etc/slackware-version | sed 's/Slackware//')
+#else
+#slackver=\ n/a
+#fi
+#}
+if [ -e /etc/slackware-version ]
+then
+distro=$(cat /etc/slackware-version)
+elif [ 'cat /etc/issue.net | grep -q Debian' ]
+then
+distro=$(cat /etc/issue.net | grep "Debian" | sed 's/%h//')
+else
+distro=\ n/a
+fi
+name=$(uname -s)
+version=$(uname -v)
+hardware=$(uname -m)
+release=$(uname -r)
+mem=$(free -omt)
+disk=$(df -lh)
+hname=$(uname -n)
+cpu=$(cat /proc/cpuinfo | grep 'cpu MHz' | sed 's/cpu MHz//')
+cpumodel=$(cat /proc/cpuinfo | grep 'model name' | sed 's/model name//')
+who=$(whoami)
+lwho=$(logname)
+uptime=$(uptime |sed 's/,.*$//')
+echo "aboutme $aver"
+#----------------------------------------------------------------------
+#This perl line is only for looks, it really has no real functionality. 
+#You can comment or remove it if you don't want the delay.
+#----------------------------------------------------------------------
+#perl -e '$|++; print "gathering system information"; for (1..3) { print "."; select( undef, undef, undef, rand ); } print ""'
+#clear
+#------------------------------
+#Display information to user...
+#------------------------------
+echo "information about your box :)" 
+echo "OS Type                 : $name"
+echo "Hostname                : $hname"
+echo "Currently logged in as  : $who"
+echo "Originally logged in as : $lwho"
+echo "Hardware Architecture   : $hardware"
+echo "CPU Model         $cpumodel"
+echo "CPU Speed   $cpu MHz"
+echo "Kernel Version          : $version" 
+#echo "Slackware Version       :$slackver"
+echo "Distro.                 : $distro"
+echo "Kernel Release          : $release"
+echo "System Uptime           :$uptime"
+echo
+echo "Hard Disk(s)"
+echo "$disk"
+echo
+echo "System Memory in MB"
+echo "$mem"
+#echo

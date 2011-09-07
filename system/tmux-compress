@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# renumber tmux windows in sequence
+
+tmux lsw |
+awk -F: '/^[0-9]+/ { if ($1 != ++i) print "tmux move-window -s " $1 " -t " i }' |
+sh

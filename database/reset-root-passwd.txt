@@ -1,0 +1,15 @@
+# reset the mysql root password manually
+# the --skip-networking option wasnt tested, it was added b/c the db
+# server is wide-open while the grants are skpped.
+
+> sudo /etc/init.d/mysql stop
+> sudo -u mysql mysqld --skip-grant-tables --skip-networking
+> bg
+> mysql
+mysql> UPDATE mysql.user SET password=PASSWORD('newpass') WHERE user='root';
+mysql> FLUSH PRIVILEGES;
+mysql> \q
+> fg
+> ^C
+... wait ...
+> sudo /etc/init.d/mysql start

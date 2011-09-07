@@ -1,0 +1,8 @@
+#/usr/bin/env bash
+
+for i in $(find . -type f -exec openssl dgst -sha1 {} \+ |tee .hashes.tmp |awk '{print $2}' |sort |uniq -d)
+	do grep $i .hashes.tmp
+		echo
+	done
+
+rm .hashes.tmp
